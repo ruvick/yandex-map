@@ -156,7 +156,12 @@ function initMapBalloonCustom() {
 		// Для создания баллуна пишем стандартные настройки из api карты
 		// Создаем шаблонные строки. Позволяет вносить любой html-код
 		balloonContent: `
-		
+			<div class="balloon">
+				<div class="balloon__address">г.Курск</div>
+				<div class="balloon__contacts">
+					<a href="tel:+79991550000">+7 999 155 00 00</a>
+				</div>
+			</div>
 		`,
 	}, {
 		// Добавляем свою иконку карты
@@ -178,12 +183,117 @@ function initMapBalloonCustom() {
 
 	// Добавляем метку на карту 
 	// Создаем обьект и в него добавляем переменную нашей метки
-	map.geoObjects.add(placemark);
+	// map.geoObjects.add(placemark);
+	// Добавляем второй, кастомный объект на карту
+	map.geoObjects.add(placemark1);
+
+	//Делаем всегда открытый баллун при загрузке карты
+	// Расскомментировать
+	// placemark1.balloon.open();
 }
 // Вызываем функцию карты
 // Как только скрипт карты готов, тогда мы вызываем функцию init.
 ymaps.ready(initMapBalloonCustom);
 
+//========================================================================================================================================================
+
+// 5.Карта с маршрутом от точки до точки
+function initMapRoute() {
+	// Создадим переменную и вызовем новый экземпляр объекта. Передадим id карты.
+	let mapMy = new ymaps.Map('map-route', {
+		// Чтобы запустить стандартную карту, нужно всего два параметра. Center и Zoom.
+		center: centerMap, // ваши данные
+		zoom: 16,
+		// Подключаем control
+		controls: ['routePanelControl']
+	});
+
+	// Определяем свои точки маршрута
+	let control = mapMy.controls.get('routePanelControl');
+	// Пишем переменную От, адресс откуда
+	let city = 'Курск';
+
+	// Пишем управление состоянием через state. Пишем от такой то точки до такой то 
+	control.routePanel.state.set({
+		// Указываем тип
+		type: 'masstransit', // Отображает варианты, авто, вело, пешеход
+		// Отключаем поле Откуда
+		fromEnabled: false,
+		// Поле От
+		from: `${city}, Ул.Дзержинского`,
+		toEnabled: true,
+		to: `${city}, Ул.Ленина 70`,
+	});
+
+	// Опции
+	// Будет 3 варианта из 4х. Мы их сами задали
+	control.routePanel.options.set({
+		types: {
+			masstransit: true,
+			pedestrian: true,
+			taxi: true,
+		}
+	});
+
+}
+// Вызываем функцию карты
+// Как только скрипт карты готов, тогда мы вызываем функцию init.
+ymaps.ready(initMapRoute);
+//========================================================================================================================================================
+
+// 6.Карта с маршрутом от текущего положения до точки
+function initMapCurrentRoute() {
+	// Создадим переменную и вызовем новый экземпляр объекта. Передадим id карты.
+	let mapMy = new ymaps.Map('map-current-route', {
+		// Чтобы запустить стандартную карту, нужно всего два параметра. Center и Zoom.
+		center: centerMap, // ваши данные
+		zoom: 16,
+		// Подключаем control
+		controls: ['routePanelControl']
+	});
+
+	// Определяем свои точки маршрута
+	let control = mapMy.controls.get('routePanelControl');
+	// Пишем переменную От, адресс откуда
+	let city = 'Курск';
+
+	// Получаем локацию через метод geolocation и функцию get(). Получили promis
+	let location = ymaps.geolocation.get();
+
+	// Обрабатываем локацию/ promis. Promis можно обработать с помощью then. Выводим функцию, в которую полуаем результат
+	// Этот результат мы и будем использовать
+	location.then(function (res) {
+		let locationText = res.geoObjects.get(0).properties.get('text');
+		console.log(locationText);
+
+		// Пишем управление состоянием через state. Пишем от такой то точки до такой то 
+		control.routePanel.state.set({
+			// Указываем тип
+			type: 'masstransit', // Отображает варианты, авто, вело, пешеход
+			// Отключаем поле Откуда
+			fromEnabled: false,
+			// Поле От
+			from: locationText,
+			toEnabled: true,
+			to: `${city}, Ул.Ленина 70`,
+		});
+
+		// Опции
+		// Будет 3 варианта из 4х. Мы их сами задали
+		control.routePanel.options.set({
+			types: {
+				masstransit: true,
+				pedestrian: true,
+				taxi: true,
+			}
+		});
+
+	});
+
+}
+// Вызываем функцию карты
+// Как только скрипт карты готов, тогда мы вызываем функцию init.
+ymaps.ready(initMapCurrentRoute);
 //========================================================================================================================================================
 
 // Multi Map ======================================================
