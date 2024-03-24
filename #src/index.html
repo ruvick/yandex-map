@@ -6,56 +6,49 @@
 
 <body>
 	<div class="wrapper">
-		@@include('_header.html',{})
+		<!-- @@include('_header.html',{}) -->
 		<main class="page">
 
 			<!-- @@include('_slider-index.html',{}) -->
 
-			<section class="page__main-banner main-banner section">
-				<div class="_container">
+			<section class="page__location location">
 
-					<h2 class="main-banner__title">Загловок</h2>
-					<p class="main-banner__subtitle"></p>
-
+				<div class="location__item">
+					<div class="_container">
+						<h2 class="location__title">Стандартная карта</h2>
+					</div>
+					<div id="map" class="location__map map"></div>
 				</div>
-			</section>
 
-			<section class="page__about about section">
-				<div class="_container">
-
-					<h2 class="__title title"></h2>
-					<p class="__subtitle"></p>
-
-
-
+				<div class="location__item">
+					<div class="_container">
+						<h2 class="location__title">Карта со своей меткой</h2>
+					</div>
+					<div id="map-marker" class="location__map map"></div>
 				</div>
-			</section>
 
-			<section class="page__about about section">
-				<div class="_container">
-
-					<h2 class="__title title"></h2>
-					<p class="__subtitle"></p>
-
+				<div class="location__item">
+					<div class="_container">
+						<h2 class="location__title">Карта с баллуном</h2>
+					</div>
+					<div id="map-balloon" class="location__map map"></div>
 				</div>
-			</section>
 
-			<section class="page__about about section">
-				<div class="_container">
-
-					<h2 class="__title title"></h2>
-					<p class="__subtitle"></p>
-
+				<div class="location__item">
+					<div class="_container">
+						<h2 class="location__title">Карта с кастомным баллуном</h2>
+					</div>
+					<div id="map-balloon-custom" class="location__map map"></div>
 				</div>
+
 			</section>
 
 	</div>
-
 
 	</main>
-	@@include('_footer.html',{})
+	<!-- @@include('_footer.html',{}) -->
 	</div>
-	@@include('_popup.html',{})
+	<!-- @@include('_popup.html',{}) -->
 	@@include('_js.html',{})
 </body>
 
